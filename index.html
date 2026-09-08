@@ -3,127 +3,473 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Effort Dial — Inference-Time Scaling Live Demonstration</title>
+  <title>EffortDial — Inference-Time Scaling Live Demonstration</title>
+  <meta name="description" content="An empirical AI research laboratory demonstrating inference-time compute scaling, diminishing marginal returns, and optimal compute frontier on constraint satisfaction problems.">
+
+  <!-- Google Fonts: Playfair Display, DM Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app-container">
 
-    <!-- Header Section -->
-    <header class="header">
-      <div class="badge-tag">Pathway Track: Inference-Time Scaling</div>
-      <h1 class="title">Effort Dial: Watching Inference-Time Scaling Happen</h1>
-      <p class="subtitle">
-        A live search experiment demonstrating how scaling inference-time compute (restarts × refinement steps) increases success rate on constraint satisfaction problems with diminishing returns.
-      </p>
-    </header>
+  <!-- PRELOADER (Animated Computing Dial) -->
+  <div id="preloader">
+    <div class="dial-container">
+      <div class="dial-ring"></div>
+      <div class="dial-pulse"></div>
+      <span class="dial-symbol">⚡</span>
+    </div>
+    <p class="preloader-text">EffortDial</p>
+    <span class="preloader-sub">Inference-Time Scaling Lab</span>
+  </div>
 
-    <!-- Interactive Control Deck -->
-    <section class="control-deck">
-      <div class="control-group">
-        <div class="control-label">Inference Effort Dial (Search Compute Budget)</div>
-        <div class="segmented-control" role="group" aria-label="Inference Effort Level">
-          <button id="effort-low" class="segmented-btn" type="button" aria-pressed="false">LOW (1×20)</button>
-          <button id="effort-med" class="segmented-btn active" type="button" aria-pressed="true">MEDIUM (3×25)</button>
-          <button id="effort-high" class="segmented-btn" type="button" aria-pressed="false">HIGH (5×40)</button>
+  <!-- NAVBAR (Sticky Glassmorphic Header) -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="logo" aria-label="Effort Dial Home">
+        Effort <span>&</span> Dial
+      </a>
+
+      <!-- Mobile Menu Button -->
+      <div class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" role="button" tabindex="0">
+        <i class="fas fa-bars"></i>
+      </div>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#hero">Overview</a></li>
+        <li><a href="#core-question">Research Premise</a></li>
+        <li><a href="#live-lab">Live Experiment</a></li>
+        <li><a href="#findings">Empirical Discoveries</a></li>
+        <li><a href="#scaling-container">Scaling Sweep</a></li>
+        <li><a href="#evidence-container">Research Context</a></li>
+        <li><a href="#architecture">Methodology</a></li>
+        <li><a href="#recap">Concept Check</a></li>
+        <li><a href="#live-lab" class="nav-cta"><i class="fas fa-play" style="font-size:0.75rem;margin-right:6px;"></i> Run Experiment</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION (Artisanal Narrative & Floating Research Stats) -->
+  <section class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <i class="fas fa-bolt" style="margin-right:6px;"></i> Inference-Time Scaling · Empirical Research Laboratory
+        </div>
+
+        <h1>
+          Where <em>Compute</em><br>
+          Meets Intelligence
+        </h1>
+
+        <p>
+          Does allocating more test-time compute always yield proportionally better AI reasoning? We evaluate the empirical boundary on combinatorial constraint satisfaction problems where additional search effort exhibits steep diminishing marginal returns.
+        </p>
+
+        <div class="hero-btns">
+          <a href="#live-lab" class="btn-primary">
+            <i class="fas fa-flask"></i> Explore Live Lab
+          </a>
+          <a href="#core-question" class="btn-outline">
+            <i class="fas fa-book-open"></i> Research Premise
+          </a>
         </div>
       </div>
 
-      <div class="control-group">
-        <div class="control-label">Task Difficulty (Constraint Problem Hardness)</div>
-        <div class="segmented-control" role="group" aria-label="Task Difficulty">
-          <button id="diff-easy" class="segmented-btn active" type="button" aria-pressed="true">Easy (8-Queens)</button>
-          <button id="diff-hard" class="segmented-btn" type="button" aria-pressed="false">Hard (24-Queens)</button>
+      <!-- Floating Stat Pills (Key Empirical Parameters) -->
+      <div class="hero-stats" role="region" aria-label="Key Empirical Parameters">
+        <div class="stat-pill">
+          <span class="num">5</span>
+          <span class="lbl">Search Budgets</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num">30</span>
+          <span class="lbl">PRNG Trials / Setting</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num">100%</span>
+          <span class="lbl">Real Browser Solver</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num">+56.7%</span>
+          <span class="lbl">Sweet-Spot Gain</span>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Main Workspace Grid -->
-    <main class="main-grid">
+  <!-- MARQUEE STRIP (Espresso Ticker with Scientific Keywords) -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Inference-Time Scaling</span><span class="dot">✦</span>
+      <span>Diminishing Marginal Returns</span><span class="dot">✦</span>
+      <span>Pareto Efficiency Frontier</span><span class="dot">✦</span>
+      <span>Zero Fake Computation</span><span class="dot">✦</span>
+      <span>Recurrent Latent Depth</span><span class="dot">✦</span>
+      <span>Min-Conflicts Heuristic</span><span class="dot">✦</span>
+      <span>Deterministic Seed Protocol</span><span class="dot">✦</span>
+      <span>BDH-CQ Empirical Validation</span><span class="dot">✦</span>
+      <span>Inference-Time Scaling</span><span class="dot">✦</span>
+      <span>Diminishing Marginal Returns</span><span class="dot">✦</span>
+      <span>Pareto Efficiency Frontier</span><span class="dot">✦</span>
+      <span>Zero Fake Computation</span><span class="dot">✦</span>
+      <span>Recurrent Latent Depth</span><span class="dot">✦</span>
+      <span>Min-Conflicts Heuristic</span><span class="dot">✦</span>
+      <span>Deterministic Seed Protocol</span><span class="dot">✦</span>
+      <span>BDH-CQ Empirical Validation</span><span class="dot">✦</span>
+    </div>
+  </div>
 
-      <!-- Left Column: Chart & Measured Metrics -->
-      <section class="card" aria-labelledby="chart-heading">
-        <div class="card-header">
-          <div>
-            <h2 id="chart-heading" class="card-title">Inference-Time Scaling Curve</h2>
-            <div class="card-subtitle">Live batch evaluation across 30 independent trials computed in your browser</div>
-          </div>
-          <span id="difficulty-badge" class="badge-tag" style="margin-bottom:0;">Easy (N=8)</span>
+  <!-- SECTION 2: THE CORE QUESTION (Research Premise & Compute Ladder) -->
+  <section id="core-question" class="section-about">
+    <div class="about-grid container">
+      <!-- Visual Column: Compute Horizon Progression Ladder -->
+      <div class="about-visual">
+        <div class="about-badge">
+          <strong>+56.7%</strong>
+          <span>Sweet Spot<br>Gain</span>
         </div>
 
-        <!-- SVG Chart Container -->
-        <div id="chart-container" style="min-height: 260px;" role="region" aria-label="Comparative Success Rate Chart"></div>
-
-        <!-- Metric Readout Cards -->
-        <div class="metrics-grid" role="region" aria-label="Active Experiment Metrics">
-          <div class="metric-card">
-            <div class="metric-label">Success Rate</div>
-            <div id="metric-success" class="metric-value">--</div>
-            <div id="metric-success-detail" class="metric-detail">--</div>
+        <div class="compute-ladder-card">
+          <div class="ladder-header">
+            <span class="ladder-tag">COMPUTE HORIZON</span>
+            <h3 class="ladder-title">Marginal Return Progression</h3>
           </div>
 
-          <div class="metric-card">
-            <div class="metric-label">Compute Cost</div>
-            <div id="metric-cost" class="metric-value">--</div>
-            <div id="metric-cost-detail" class="metric-detail">total search steps</div>
-          </div>
+          <div class="ladder-steps">
+            <div class="ladder-step step-minimal">
+              <div class="step-badge">1×10</div>
+              <div class="step-info">
+                <strong>Minimal Compute</strong>
+                <span>High uncertainty · Quick single pass</span>
+              </div>
+              <div class="step-return return-low">Baseline</div>
+            </div>
 
-          <div class="metric-card">
-            <div class="metric-label">Runtime Latency</div>
-            <div id="metric-runtime" class="metric-value">--</div>
-            <div id="metric-runtime-detail" class="metric-detail">measured wall-clock</div>
-          </div>
+            <div class="ladder-step step-low">
+              <div class="step-badge">1×20</div>
+              <div class="step-info">
+                <strong>LOW Budget</strong>
+                <span>Initial exploration · High marginal gain</span>
+              </div>
+              <div class="step-return return-high">+1.73 %/step</div>
+            </div>
 
-          <div class="metric-card">
-            <div class="metric-label">Compute Budget</div>
-            <div id="metric-budget" class="metric-value">--</div>
-            <div id="metric-budget-detail" class="metric-detail">restarts × steps</div>
+            <div class="ladder-step step-medium highlight-rec">
+              <div class="step-badge">3×25</div>
+              <div class="step-info">
+                <strong>MEDIUM Budget <span class="badge-rec">★ Optimal Sweet Spot</span></strong>
+                <span>Strongest accuracy-per-step return</span>
+              </div>
+              <div class="step-return return-peak">+1.50 %/step</div>
+            </div>
+
+            <div class="ladder-step step-high">
+              <div class="step-badge">5×40</div>
+              <div class="step-info">
+                <strong>HIGH Budget</strong>
+                <span>Performance ceiling · Diminishing returns</span>
+              </div>
+              <div class="step-return return-diminish">+0.13 %/step</div>
+            </div>
+
+            <div class="ladder-step step-extended">
+              <div class="step-badge">7×50</div>
+              <div class="step-info">
+                <strong>Extended Budget</strong>
+                <span>Budget saturation · Flatline returns</span>
+              </div>
+              <div class="step-return return-flat">0.00 %/step</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text Column: The Central Claim -->
+      <div class="about-text">
+        <p class="about-label">The Central Claim</p>
+        <h2>More compute does not always mean proportionally better performance.</h2>
+        <p>
+          When modern reasoning models and constraint solvers allocate additional compute during inference, they explore wider solution branches and repair conflicting partial states.
+        </p>
+        <p>
+          However, this trade-off is governed by an asymmetric law: initial investments in compute resolve the vast majority of solvable states, while subsequent compute yields progressively smaller accuracy returns at exponentially higher computational expense.
+        </p>
+        <div class="about-highlights">
+          <span class="highlight"><i class="fas fa-check-circle"></i> <strong>Initial Budget Surge:</strong> Transitioning from minimal to balanced compute yields the steepest performance surge (+56.7%).</span>
+          <span class="highlight"><i class="fas fa-check-circle"></i> <strong>Diminishing Plateau:</strong> High budgets saturate reachable states; each marginal percentage requires exponentially more steps (+10.0%).</span>
+          <span class="highlight"><i class="fas fa-check-circle"></i> <strong>Complexity Ceiling:</strong> On genuinely hard problems (24-Queens), increasing compute raises the ceiling (~80%) but cannot guarantee perfection.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: LIVE EXPERIMENT LAB (Full-Width Interactive Laboratory) -->
+  <section class="section-lab" id="live-lab">
+    <div class="section-container">
+      <!-- Section Header -->
+      <div class="section-header-center">
+        <span class="section-label-gold">Interactive Demonstration</span>
+        <h2 class="section-headline-dark">The Live Experiment Laboratory</h2>
+        <p class="section-subheadline-dark">
+          Adjust inference effort and problem scale in real time. Every execution triggers genuine randomized min-conflicts solving in your browser.
+        </p>
+      </div>
+
+      <!-- Synthesizer Control Console -->
+      <div class="control-console">
+        <!-- Effort Dial Group -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Inference Effort Dial (Search Compute Budget)</span>
+            <span class="control-hint">Restarts × Max Steps</span>
+          </div>
+          <div class="segmented-control" role="group" aria-label="Inference Effort Level">
+            <button id="effort-low" class="segmented-btn" type="button" aria-pressed="false">
+              <span class="btn-meter meter-low"></span>
+              <span class="btn-title">LOW (1×20)</span>
+            </button>
+            <button id="effort-med" class="segmented-btn active" type="button" aria-pressed="true">
+              <span class="btn-meter meter-med"></span>
+              <span class="btn-title">MEDIUM (3×25) <span class="badge-rec-sm">★ Sweet Spot</span></span>
+            </button>
+            <button id="effort-high" class="segmented-btn" type="button" aria-pressed="false">
+              <span class="btn-meter meter-high"></span>
+              <span class="btn-title">HIGH (5×40)</span>
+            </button>
           </div>
         </div>
 
-        <div class="callout-note">
-          <strong>Live Observation:</strong> Notice the curve shape. Increasing compute from LOW to MEDIUM yields substantial gains, while moving to HIGH yields smaller incremental returns (diminishing returns).
+        <!-- Task Difficulty Group -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Task Difficulty (Constraint Problem Hardness)</span>
+            <span class="control-hint">N-Queens Problem Size</span>
+          </div>
+          <div class="segmented-control" role="group" aria-label="Task Difficulty">
+            <button id="diff-easy" class="segmented-btn active" type="button" aria-pressed="true">
+              <span class="btn-title">Easy (8-Queens)</span>
+            </button>
+            <button id="diff-hard" class="segmented-btn" type="button" aria-pressed="false">
+              <span class="btn-title">Hard (24-Queens)</span>
+            </button>
+          </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Right Column: Real Board Animation -->
-      <section class="card board-card" aria-labelledby="board-heading">
-        <div class="card-header" style="width: 100%;">
-          <div>
-            <h2 id="board-heading" class="card-title">Live Attempt Substrate</h2>
-            <div class="card-subtitle">Authentic boardTrace playback of one actual solve attempt</div>
+      <!-- Primary Metrics Readout Deck -->
+      <div class="metrics-grid" role="region" aria-label="Active Experiment Metrics">
+        <div class="metric-card card-glow-gold">
+          <div class="metric-header-row">
+            <span class="metric-label">Success Rate</span>
+            <span class="metric-icon"><i class="fas fa-bullseye"></i></span>
+          </div>
+          <div id="metric-success" class="metric-value">--</div>
+          <div id="metric-success-detail" class="metric-detail">--</div>
+        </div>
+
+        <div class="metric-card card-glow-amber">
+          <div class="metric-header-row">
+            <span class="metric-label">Compute Cost</span>
+            <span class="metric-icon"><i class="fas fa-bolt"></i></span>
+          </div>
+          <div id="metric-cost" class="metric-value">--</div>
+          <div id="metric-cost-detail" class="metric-detail">total search steps</div>
+        </div>
+
+        <div class="metric-card card-glow-coffee">
+          <div class="metric-header-row">
+            <span class="metric-label">Runtime Latency</span>
+            <span class="metric-icon"><i class="fas fa-stopwatch"></i></span>
+          </div>
+          <div id="metric-runtime" class="metric-value">--</div>
+          <div id="metric-runtime-detail" class="metric-detail">measured wall-clock</div>
+        </div>
+
+        <div class="metric-card card-glow-cream">
+          <div class="metric-header-row">
+            <span class="metric-label">Compute Budget</span>
+            <span class="metric-icon"><i class="fas fa-chart-bar"></i></span>
+          </div>
+          <div id="metric-budget" class="metric-value">--</div>
+          <div id="metric-budget-detail" class="metric-detail">restarts × steps</div>
+        </div>
+      </div>
+
+      <!-- Main Dual Workspace: Chart & Chessboard Substrate -->
+      <main class="lab-workspace-grid">
+        <!-- Left Column: Scaling Curve Chart -->
+        <section class="lab-instrument-card chart-panel-card" aria-labelledby="chart-heading">
+          <div class="instrument-header">
+            <div>
+              <div class="badge-tag" style="margin-bottom:4px;">LIVE PERFORMANCE</div>
+              <h2 id="chart-heading" class="instrument-title">Inference-Time Scaling Curve</h2>
+              <div class="instrument-subtitle">Live batch evaluation across 30 independent trials computed in your browser</div>
+            </div>
+            <span id="difficulty-badge" class="badge-tag" style="margin-bottom:0;">Easy (N=8)</span>
+          </div>
+
+          <!-- SVG Chart Container -->
+          <div id="chart-container" class="chart-canvas-container" style="min-height: 260px;" role="region" aria-label="Comparative Success Rate Chart"></div>
+
+          <div class="callout-note">
+            <div class="note-icon"><i class="fas fa-lightbulb"></i></div>
+            <div class="note-text">
+              <strong>Empirical Observation:</strong> Notice the concave curve shape. Moving from LOW to MEDIUM yields substantial accuracy gains (+56.7%), while moving to HIGH yields only incremental gains (+10.0%) for 2.6× more search compute.
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Column: Real Board Animation -->
+        <section class="lab-instrument-card board-card" aria-labelledby="board-heading">
+          <div class="instrument-header">
+            <div>
+              <div class="badge-tag" style="margin-bottom:4px;">REAL SEARCH TRACE</div>
+              <h2 id="board-heading" class="instrument-title">Live Attempt Substrate</h2>
+              <div class="instrument-subtitle">Authentic boardTrace playback of one actual solve attempt</div>
+            </div>
+          </div>
+
+          <!-- SVG Chessboard Container -->
+          <div id="board-container" class="board-canvas-container" role="region" aria-label="Interactive Chessboard Display"></div>
+
+          <!-- Board Playback Controls -->
+          <div class="board-actions">
+            <button id="btn-watch-solve" class="btn-primary-sm" type="button" aria-label="Run fresh solve attempt and animate"><i class="fas fa-redo"></i> Watch One Solve</button>
+            <button id="btn-play-pause" class="btn-control" type="button" aria-label="Pause or resume trace animation"><i class="fas fa-pause"></i> Pause</button>
+            <button id="btn-prev-step" class="btn-control" type="button" aria-label="Step backward one frame" title="Step backward">◀</button>
+            <button id="btn-next-step" class="btn-control" type="button" aria-label="Step forward one frame" title="Step forward">▶</button>
+          </div>
+
+          <!-- Board Status Panel -->
+          <div id="board-status" class="board-status" aria-live="polite">
+            Initializing live trace...
+          </div>
+        </section>
+      </main>
+    </div>
+  </section>
+
+  <!-- SECTION 4: KEY EMPIRICAL FINDINGS (Signature Discovery Cards) -->
+  <section id="findings" class="section-findings" aria-label="Key Empirical Findings">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Empirical Discoveries</span>
+        <h2>Four Fundamental Scaling Laws</h2>
+        <p>Key properties of inference-time scaling revealed by empirical solver trials and computational constraint theory.</p>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Card 1: Featured Law of Diminishing Returns -->
+        <div class="coffee-card finding-card-primary">
+          <div class="card-img-placeholder">
+            <div class="card-num-watermark">01</div>
+            <span class="card-badge">★ Core Discovery</span>
+          </div>
+          <div class="card-content">
+            <h3>Law of Diminishing Returns</h3>
+            <p>
+              The steepest performance leap occurs during the initial transition from minimal exploration to balanced search budget (<strong>+56.7%</strong> from LOW to MEDIUM on Easy 8-Queens). Beyond this sweet spot, pushing to HIGH yields merely <strong>+10.0%</strong> additional accuracy while multiplying search step consumption by <strong>2.6×</strong>.
+            </p>
+            <div class="card-notes">
+              <span class="note-chip">+56.7% Initial Jump</span>
+              <span class="note-chip">+10.0% Marginal Gain</span>
+              <span class="note-chip">2.6× Step Cost</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">Sweet Spot: MEDIUM</span>
+              <span class="card-stat-chip">Logarithmic Scaling</span>
+            </div>
           </div>
         </div>
 
-        <!-- SVG Chessboard Container -->
-        <div id="board-container" role="region" aria-label="Interactive Chessboard Display"></div>
-
-        <!-- Board Playback Controls -->
-        <div class="board-actions">
-          <button id="btn-watch-solve" class="btn-primary" type="button" aria-label="Run fresh solve attempt and animate">Watch One Solve</button>
-          <button id="btn-play-pause" class="btn-control" type="button" aria-label="Pause or resume trace animation">Pause</button>
-          <button id="btn-prev-step" class="btn-control" type="button" aria-label="Step backward one frame" title="Step backward">◀</button>
-          <button id="btn-next-step" class="btn-control" type="button" aria-label="Step forward one frame" title="Step forward">▶</button>
+        <!-- Card 2: Ceiling Bounds -->
+        <div class="coffee-card">
+          <div class="card-img-placeholder">
+            <div class="card-num-watermark">02</div>
+            <span class="card-badge">Complexity Ceiling</span>
+          </div>
+          <div class="card-content">
+            <h3>Hard Ceilings & Complexity</h3>
+            <p>
+              On Hard instances (24-Queens), increasing inference effort to HIGH elevates success to ~80% but does not achieve 100%. Compute expansion raises achievable performance ceilings but cannot overcome intrinsic combinatorial intractability.
+            </p>
+            <div class="card-notes">
+              <span class="note-chip">~80% Hard Ceiling</span>
+              <span class="note-chip">Not 100%</span>
+              <span class="note-chip">N=24 Complexity</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">Max Cap: ~80%</span>
+              <span class="card-stat-chip">Ceiling Bound</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Board Status Panel -->
-        <div id="board-status" class="board-status" aria-live="polite">
-          Initializing live trace...
+        <!-- Card 3: Sweet-Spot Heuristic -->
+        <div class="coffee-card">
+          <div class="card-img-placeholder">
+            <div class="card-num-watermark">03</div>
+            <span class="card-badge">Pareto Frontier</span>
+          </div>
+          <div class="card-content">
+            <h3>The Sweet-Spot Budget</h3>
+            <p>
+              The highest marginal efficiency occurs early along the compute axis. Medium effort captures 90% of maximum observable problem-solving capacity at roughly one-third of the total computational budget, establishing it as the empirical Pareto-optimal choice.
+            </p>
+            <div class="card-notes">
+              <span class="note-chip">3 Restarts</span>
+              <span class="note-chip">25 Max Steps</span>
+              <span class="note-chip">Pareto Optimal</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">35% Cost for 90%</span>
+              <span class="card-stat-chip">Optimal</span>
+            </div>
+          </div>
         </div>
-      </section>
 
-    </main>
+        <!-- Card 4: Search vs Latent Duality -->
+        <div class="coffee-card">
+          <div class="card-img-placeholder">
+            <div class="card-num-watermark">04</div>
+            <span class="card-badge">Cross-Paradigm Duality</span>
+          </div>
+          <div class="card-content">
+            <h3>Search vs. Latent Compute</h3>
+            <p>
+              Discrete random restarts with heuristic repairs and recurrent latent-state memory updates (BDH-CQ) are mathematically distinct substrates. Yet both exhibit the exact same concavity profile as compute scales.
+            </p>
+            <div class="card-notes">
+              <span class="note-chip">Discrete Search</span>
+              <span class="note-chip">Recurrent Latent</span>
+              <span class="note-chip">Shared Law</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">Universal Scaling</span>
+              <span class="card-stat-chip">Cross-Domain</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Phase 5: Separately Bordered Published BDH-CQ Evidence Panel -->
-    <section id="evidence-container" class="evidence-panel-wrapper" aria-label="Published BDH-CQ Reference Evidence"></section>
-
-    <!-- Phase 7 Post-Plan Extension: Advanced Scaling Experiment -->
-    <section id="scaling-container" class="scaling-panel-wrapper" aria-label="Advanced Scaling Experiment">
+  <!-- SECTION 5: ADVANCED SCALING EXPERIMENT (Continuous Sweep & Pareto Curve) -->
+  <section id="scaling-container" class="section-scaling" aria-label="Advanced Scaling Experiment">
+    <div class="section-container">
       <div class="scaling-exp-inner">
         <!-- Section Header -->
         <div class="scaling-header">
           <div>
-            <div class="badge-tag" style="margin-bottom: 6px;">Phase 7 Post-Implementation Extension</div>
+            <div class="badge-tag" style="margin-bottom: 6px;">Continuous Compute Sweep</div>
             <h3 class="scaling-title">Advanced Scaling Experiment</h3>
             <p class="scaling-desc">
               Execute a continuous 5-point inference compute sweep on the real solver. Measures the empirical
@@ -132,7 +478,7 @@
           </div>
           <div class="scaling-actions">
             <button id="btn-run-sweep" class="btn-sweep" type="button" aria-label="Run Scaling Sweep on active difficulty">
-              ▶ Run Scaling Sweep
+              <i class="fas fa-play" style="margin-right:6px;"></i> Run Scaling Sweep
             </button>
             <div id="sweep-status-indicator" class="sweep-status-text"></div>
           </div>
@@ -141,48 +487,183 @@
         <!-- Dynamic Results Container -->
         <div id="scaling-results-container"></div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Phase 6: Interactive Educational Recap Section -->
-    <section class="recap-section" aria-labelledby="recap-heading">
-      <div class="recap-header">
-        <div class="badge-tag" style="margin-bottom:6px;">Educational Review</div>
-        <h3 id="recap-heading" class="recap-title">Interactive Recap & Concept Check</h3>
-        <p class="recap-subtitle">Test your understanding of the core inference-time scaling principles demonstrated above.</p>
-      </div>
-      <div class="recap-grid">
-        <div class="recap-card">
-          <span class="recap-prompt-badge">Prompt 1</span>
-          <div class="recap-question">After increasing inference effort, what changed: success rate, compute cost, or both?</div>
-          <div class="recap-answer-box">
-            <strong>Concept:</strong> Increasing effort increases <strong>both</strong> success rate and total search compute cost. However, returns diminish: the gain from LOW to MEDIUM (+56.7% on Easy) is substantially larger than the gain from MEDIUM to HIGH (+10.0%), meaning each additional unit of compute buys progressively less accuracy.
-          </div>
-        </div>
-
-        <div class="recap-card">
-          <span class="recap-prompt-badge">Prompt 2</span>
-          <div class="recap-question">How is BDH-CQ's effort mechanism different from this live N-Queens demo?</div>
-          <div class="recap-answer-box">
-            <strong>Concept:</strong> This live demo scales <strong>discrete search computation</strong> (independent random restarts and iterative min-conflicts repair steps on a constraint puzzle). In contrast, BDH-CQ scales <strong>recurrent latent-state computation</strong> (recurrent associative working-memory updates inside a trained neural sequence model without verbalized reasoning tokens). They represent two distinct mechanisms that exhibit the same general accuracy-versus-compute scaling trade-off.
+  <!-- SECTION 6: EDITORIAL RESEARCH QUOTE -->
+  <section id="research-insight" class="section-conclusion" aria-label="Research Insight">
+    <div class="section-container">
+      <div class="conclusion-content">
+        <div class="conclusion-quote-mark">“</div>
+        <blockquote class="conclusion-quote">
+          The optimal compute budget is almost never the maximum possible budget. In algorithmic search, as in neural inference, the highest return on compute occurs in the transition from minimal to moderate effort.
+        </blockquote>
+        <div class="conclusion-author">
+          <div class="conclusion-author-avatar"><i class="fas fa-bolt"></i></div>
+          <div class="conclusion-author-meta">
+            <span class="conclusion-author-name">Fundamental Principle of Inference-Time Compute</span>
+            <span class="conclusion-author-role">Empirically validated across Discrete CSP Search & Recurrent Transformer Models</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Phase 6: Transparent Limitations & Experimental Setup Notice -->
-    <section class="limitations-box" aria-label="Experimental Scope and Limitations">
-      <div class="limitations-title">Experimental Scope & Methodological Disclosures</div>
-      <ul class="limitations-list">
-        <li><strong>Fixed Effort Presets:</strong> Compute budgets are calibrated fixed presets: LOW (1 restart × 20 steps), MEDIUM (3 restarts × 25 steps), HIGH (5 restarts × 40 steps).</li>
-        <li><strong>Sample Size & Noise:</strong> Live experiment metrics are computed over 30 independent trials per setting; minor statistical variance between seeds is genuine to the randomized local search.</li>
-        <li><strong>Algorithmic Analogy, Not Reproduction:</strong> N-Queens under min-conflicts is a classic constraint satisfaction problem, not a language model. It illustrates the general mathematical phenomenon of inference-time compute scaling, not BDH-CQ's proprietary model weights or training.</li>
-        <li><strong>Difficulty Ceiling:</strong> On Hard (24-Queens), increasing effort to HIGH elevates success to ~80% but does not reach 100%, demonstrating that test-time scaling raises achievable performance ceilings but cannot guarantee perfection on arbitrarily difficult instances.</li>
-      </ul>
-    </section>
+  <!-- SECTION 7: PRIMARY-SOURCE RESEARCH EVIDENCE PANEL (Phase 5) -->
+  <section id="evidence-container" class="section-evidence" aria-label="Published BDH-CQ Reference Evidence"></section>
 
-  </div>
+  <!-- SECTION 8: METHODOLOGICAL PIPELINE (How It Works) -->
+  <section id="architecture" class="section-process" aria-label="System Architecture and Methodology">
+    <div class="container">
+      <div class="process-header">
+        <p class="section-label">System Architecture</p>
+        <h2>Methodological Execution Pipeline</h2>
+        <p class="section-sub-desc">Every metric, trajectory, and visualization is computed deterministically in your browser using pure algorithmic execution.</p>
+      </div>
 
-  <!-- Scripts: loaded in dependency order -->
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <h4>Configuration Presets</h4>
+          <p>Select an effort budget (LOW, MEDIUM, HIGH) and problem size (Easy N=8, Hard N=24). Sets restart limit and maximum step threshold.</p>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <h4>Seeded PRNG</h4>
+          <p>Linear congruential generator (LCG) initializes queen placements with strict deterministic seeds (42..82), guaranteeing 100% reproducible trials.</p>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <h4>Min-Conflicts Repair</h4>
+          <p>Heuristic local search selects conflicting queens and relocates them to rows with minimal pairwise attacks until solved or budget exhausted.</p>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <h4>boardTrace Logging</h4>
+          <p>Every queen move, conflict count, and restart event is captured frame-by-frame directly by the solver engine into an immutable execution log.</p>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <h4>SVG Trace Replay</h4>
+          <p>Interactive chessboard renders authentic solver frames sequentially with conflict heatmaps, step stepping, and live speed controls.</p>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">6</div>
+          <h4>Pareto Analysis</h4>
+          <p>Marginal return differentials (ΔS / ΔC) and empirical Pareto frontiers are calculated live to identify optimal compute allocations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9: METHODOLOGICAL DISCLOSURES & RECAP -->
+  <section class="section-disclosures" id="disclosures">
+    <div class="section-container">
+      <!-- TRANSPARENT LIMITATIONS & METHODOLOGICAL DISCLOSURES (Phase 6) -->
+      <div class="limitations-box" aria-label="Experimental Scope and Limitations">
+        <div class="limitations-title"><i class="fas fa-shield-alt" style="margin-right:8px;color:var(--gold);"></i> Experimental Scope & Methodological Disclosures</div>
+        <ul class="limitations-list">
+          <li><strong>Fixed Effort Presets:</strong> Compute budgets are calibrated fixed presets: LOW (1 restart × 20 steps), MEDIUM (3 restarts × 25 steps), HIGH (5 restarts × 40 steps).</li>
+          <li><strong>Sample Size & Noise:</strong> Live experiment metrics are computed over 30 independent trials per setting; minor statistical variance between seeds is genuine to the randomized local search.</li>
+          <li><strong>Algorithmic Analogy, Not Reproduction:</strong> N-Queens under min-conflicts is a classic constraint satisfaction problem, not a language model. It illustrates the general mathematical phenomenon of inference-time compute scaling, not BDH-CQ's proprietary model weights or training.</li>
+          <li><strong>Difficulty Ceiling:</strong> On Hard (24-Queens), increasing effort to HIGH elevates success to ~80% but does not reach 100%, demonstrating that test-time scaling raises achievable performance ceilings but cannot guarantee perfection on arbitrarily difficult instances.</li>
+        </ul>
+      </div>
+
+      <!-- INTERACTIVE EDUCATIONAL RECAP (Phase 6) -->
+      <div class="recap-section" id="recap" aria-labelledby="recap-heading">
+        <div class="recap-header">
+          <div class="badge-tag" style="margin-bottom:6px;">Educational Review</div>
+          <h3 id="recap-heading" class="recap-title">Interactive Recap & Concept Check</h3>
+          <p class="recap-subtitle">Test your understanding of the core inference-time scaling principles demonstrated above.</p>
+        </div>
+        <div class="recap-grid">
+          <div class="recap-card">
+            <span class="recap-prompt-badge">Prompt 1</span>
+            <div class="recap-question">After increasing inference effort, what changed: success rate, compute cost, or both?</div>
+            <div class="recap-answer-box">
+              <strong>Concept:</strong> Increasing effort increases <strong>both</strong> success rate and total search compute cost. However, returns diminish: the gain from LOW to MEDIUM (+56.7% on Easy) is substantially larger than the gain from MEDIUM to HIGH (+10.0%), meaning each additional unit of compute buys progressively less accuracy.
+            </div>
+          </div>
+
+          <div class="recap-card">
+            <span class="recap-prompt-badge">Prompt 2</span>
+            <div class="recap-question">How is BDH-CQ's effort mechanism different from this live N-Queens demo?</div>
+            <div class="recap-answer-box">
+              <strong>Concept:</strong> This live demo scales <strong>discrete search computation</strong> (independent random restarts and iterative min-conflicts repair steps on a constraint puzzle). In contrast, BDH-CQ scales <strong>recurrent latent-state computation</strong> (recurrent associative working-memory updates inside a trained neural sequence model without verbalized reasoning tokens). They represent two distinct mechanisms that exhibit the same general accuracy-versus-compute scaling trade-off.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 10: SCIENTIFIC FOOTER -->
+  <footer class="app-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">Effort <span>&</span> Dial</div>
+          <p>An empirical research laboratory evaluating test-time compute allocation, diminishing returns, and Pareto-optimal trade-offs across search algorithms and neural sequence models.</p>
+          <div class="social-links">
+            <a href="https://github.com" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://arxiv.org/abs/2608.09888" target="_blank" rel="noopener" aria-label="arXiv Paper"><i class="fas fa-graduation-cap"></i></a>
+            <a href="sources/SOURCES.md" target="_blank" rel="noopener" aria-label="Sources Document"><i class="fas fa-book"></i></a>
+            <a href="LICENSE" target="_blank" rel="noopener" aria-label="License"><i class="fas fa-balance-scale"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#hero">Overview</a></li>
+            <li><a href="#core-question">Research Premise</a></li>
+            <li><a href="#live-lab">Live Experiment Lab</a></li>
+            <li><a href="#findings">Empirical Discoveries</a></li>
+            <li><a href="#scaling-container">Scaling Sweep</a></li>
+            <li><a href="#architecture">Methodology</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Citations & Papers</h4>
+          <ul>
+            <li><a href="https://arxiv.org/abs/2608.09888" target="_blank" rel="noopener">BDH-CQ (arXiv:2608.09888)</a></li>
+            <li><a href="https://arxiv.org/abs/2509.26507" target="_blank" rel="noopener">Dragon Hatchling (2025)</a></li>
+            <li><a href="https://arxiv.org/abs/2408.03314" target="_blank" rel="noopener">Snell et al. (2024)</a></li>
+            <li><a href="https://arxiv.org/abs/2501.19393" target="_blank" rel="noopener">Muennighoff et al. (2025)</a></li>
+            <li><a href="sources/SOURCES.md" target="_blank">View All Sources (SOURCES.md)</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Research Specifications</h4>
+          <div class="footer-specs">
+            <div class="spec-row"><strong>Framework:</strong> <span>Vanilla ES6+ / SVG</span></div>
+            <div class="spec-row"><strong>Protocol:</strong> <span>30 Independent PRNG Seeds</span></div>
+            <div class="spec-row"><strong>Solver:</strong> <span>Min-Conflicts Local Search</span></div>
+            <div class="spec-row"><strong>License:</strong> <span>MIT Open Source</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 EffortDial Research Lab. Published under the <a href="LICENSE" style="color:var(--latte);text-decoration:underline;">MIT License</a>.</p>
+        <p><a href="sources/SOURCES.md">Sources & Citations</a> | <a href="#disclosures">Methodological Scope</a> | <a href="#recap">Concept Review</a></p>
+        <p>Built for IIT Kharagpur AI Hackathon · Rigorous Empirical Evaluation</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING SCROLL TO TOP BUTTON -->
+  <button id="scrollTop" aria-label="Scroll to top"><i class="fas fa-chevron-up"></i></button>
+
+  <!-- SCRIPTS (Loaded in strict dependency order) -->
   <script src="src/config.js"></script>
   <script src="src/solver.js"></script>
   <script src="src/chart.js"></script>

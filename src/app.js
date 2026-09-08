@@ -360,6 +360,87 @@
     });
   }
 
+  // Mobile Navigation Drawer Toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // Sticky Navbar Scrolled State & Floating Scroll-To-Top
+  const navbar = document.getElementById('navbar');
+  const scrollTopBtn = document.getElementById('scrollTop');
+
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (navbar) {
+      if (y > 20) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }
+    if (scrollTopBtn) {
+      if (y > 400) {
+        scrollTopBtn.classList.add('visible');
+      } else {
+        scrollTopBtn.classList.remove('visible');
+      }
+    }
+  }, { passive: true });
+
+  if (scrollTopBtn) {
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // Preloader Dismissal (matching Bean & Brew animated transition)
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    const dismissPreloader = () => {
+      preloader.classList.add('fade-out');
+      setTimeout(() => {
+        preloader.style.display = 'none';
+      }, 750);
+    };
+    if (document.readyState === 'complete') {
+      setTimeout(dismissPreloader, 400);
+    } else {
+      window.addEventListener('load', () => setTimeout(dismissPreloader, 400));
+      setTimeout(dismissPreloader, 2000); // Fallback
+    }
+  }
+
+  // Newsletter Subscription Feedback
+  const newsletterBtn = document.getElementById('newsletterBtn');
+  if (newsletterBtn) {
+    newsletterBtn.addEventListener('click', () => {
+      const emailInput = newsletterBtn.previousElementSibling;
+      if (emailInput && emailInput.value && emailInput.value.includes('@')) {
+        const originalText = newsletterBtn.textContent;
+        newsletterBtn.textContent = 'Subscribed! ⚡';
+        newsletterBtn.disabled = true;
+        setTimeout(() => {
+          newsletterBtn.textContent = originalText;
+          newsletterBtn.disabled = false;
+          emailInput.value = '';
+        }, 3000);
+      } else {
+        alert('Please enter a valid email address.');
+      }
+    });
+  }
+
   // --- Cold Open (Step 0) ---
   // Default to MEDIUM effort, Easy difficulty
   updateControlButtonsUI();
