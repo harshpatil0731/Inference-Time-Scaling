@@ -237,7 +237,6 @@ function runBatch(n, restarts, maxSteps, trials, rng) {
       trialSteps += attempt.steps;
       if (attempt.solved) {
         trialSolved = true;
-        break;
       }
     }
 
