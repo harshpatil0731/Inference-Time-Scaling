@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Phase 1 - Solver Verification</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
+    .pass { color: #4caf50; }
+    .fail { color: #f44336; }
+    pre { background: #2a2a2a; padding: 12px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Phase 1: N-Queens Min-Conflicts Solver Verification</h1>
+  <div id="output"></div>
+
+  <script src="../src/solver.js"></script>
+  <script>
+    const { createRng, conflicts, runAttempt, runBatch } = window.Solver;
+    const out = document.getElementById('output');
+
+    function log(msg, isPass) {
+      const p = document.createElement('div');
+      p.className = isPass === true ? 'pass' : (isPass === false ? 'fail' : '');
+      p.textContent = msg;
+      out.appendChild(p);
+    }
+
+    log('--- 1. Testing conflicts() on known boards ---');
+    const valid8 = [0, 4, 7, 5, 2, 6, 1, 3];
+    log(`Valid 8-Queens [0,4,7,5,2,6,1,3]: conflicts = ${conflicts(valid8)} (expected 0)`, conflicts(valid8) === 0);
+
+    const valid4 = [1, 3, 0, 2];
+    log(`Valid 4-Queens [1,3,0,2]: conflicts = ${conflicts(valid4)} (expected 0)`, conflicts(valid4) === 0);
+
+    const invalidRow = [0, 0, 0, 0];
+    log(`Invalid Row [0,0,0,0]: conflicts = ${conflicts(invalidRow)} (expected 6)`, conflicts(invalidRow) === 6);
+
+    const invalidDiag = [0, 1, 2, 3];
+    log(`Invalid Diagonal [0,1,2,3]: conflicts = ${conflicts(invalidDiag)} (expected 6)`, conflicts(invalidDiag) === 6);
+
+    log('\n--- 2. Testing createRng() Seedability & Determinism ---');
+    const rng1 = createRng(42);
+    const rng2 = createRng(42);
+    const s1 = [rng1(), rng1(), rng1()];
+    const s2 = [rng2(), rng2(), rng2()];
+    log(`Same seed output match: ${JSON.stringify(s1) === JSON.stringify(s2)}`, JSON.stringify(s1) === JSON.stringify(s2));
+
+    log('\n--- 3. Testing runAttempt() and boardTrace Determinism ---');
+    const att1 = runAttempt(8, 100, createRng(12345), true);
+    const att2 = runAttempt(8, 100, createRng(12345), true);
+    const traceIdentical = JSON.stringify(att1.boardTrace) === JSON.stringify(att2.boardTrace);
+    log(`Same seed bit-identical trace: ${traceIdentical} (steps: ${att1.steps})`, traceIdentical);
+
+    const attDiff = runAttempt(8, 100, createRng(54321), true);
+    const traceDiverged = JSON.stringify(att1.boardTrace) !== JSON.stringify(attDiff.boardTrace);
+    log(`Different seed trace diverged: ${traceDiverged}`, traceDiverged);
+
+    log('\n--- 4. Testing Generous Budget Batch (N=8) ---');
+    const batchRes = runBatch(8, 20, 200, 30, createRng(100));
+    log(`High Budget (20 restarts x 200 steps, 30 trials): Success Rate = ${batchRes.successRate * 100}%, Avg Steps = ${batchRes.avgSteps}, Wall Time = ${batchRes.wallTimeMs}ms`, batchRes.successRate >= 0.95);
+  </script>
+</body>
+</html>
