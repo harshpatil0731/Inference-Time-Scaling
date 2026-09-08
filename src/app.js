@@ -64,13 +64,17 @@
   function updateControlButtonsUI() {
     Object.keys(effortButtons).forEach(key => {
       if (effortButtons[key]) {
-        effortButtons[key].classList.toggle('active', key === currentEffort);
+        const isActive = key === currentEffort;
+        effortButtons[key].classList.toggle('active', isActive);
+        effortButtons[key].setAttribute('aria-pressed', isActive ? 'true' : 'false');
       }
     });
 
     Object.keys(diffButtons).forEach(key => {
       if (diffButtons[key]) {
-        diffButtons[key].classList.toggle('active', key === currentDifficulty);
+        const isActive = key === currentDifficulty;
+        diffButtons[key].classList.toggle('active', isActive);
+        diffButtons[key].setAttribute('aria-pressed', isActive ? 'true' : 'false');
       }
     });
 

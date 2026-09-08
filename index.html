@@ -22,18 +22,18 @@
     <section class="control-deck">
       <div class="control-group">
         <div class="control-label">Inference Effort Dial (Search Compute Budget)</div>
-        <div class="segmented-control" role="group" aria-label="Effort Level">
-          <button id="effort-low" class="segmented-btn" type="button">LOW (1×20)</button>
-          <button id="effort-med" class="segmented-btn active" type="button">MEDIUM (3×25)</button>
-          <button id="effort-high" class="segmented-btn" type="button">HIGH (5×40)</button>
+        <div class="segmented-control" role="group" aria-label="Inference Effort Level">
+          <button id="effort-low" class="segmented-btn" type="button" aria-pressed="false">LOW (1×20)</button>
+          <button id="effort-med" class="segmented-btn active" type="button" aria-pressed="true">MEDIUM (3×25)</button>
+          <button id="effort-high" class="segmented-btn" type="button" aria-pressed="false">HIGH (5×40)</button>
         </div>
       </div>
 
       <div class="control-group">
         <div class="control-label">Task Difficulty (Constraint Problem Hardness)</div>
         <div class="segmented-control" role="group" aria-label="Task Difficulty">
-          <button id="diff-easy" class="segmented-btn active" type="button">Easy (8-Queens)</button>
-          <button id="diff-hard" class="segmented-btn" type="button">Hard (24-Queens)</button>
+          <button id="diff-easy" class="segmented-btn active" type="button" aria-pressed="true">Easy (8-Queens)</button>
+          <button id="diff-hard" class="segmented-btn" type="button" aria-pressed="false">Hard (24-Queens)</button>
         </div>
       </div>
     </section>
@@ -42,20 +42,20 @@
     <main class="main-grid">
 
       <!-- Left Column: Chart & Measured Metrics -->
-      <section class="card">
+      <section class="card" aria-labelledby="chart-heading">
         <div class="card-header">
           <div>
-            <h2 class="card-title">Inference-Time Scaling Curve</h2>
+            <h2 id="chart-heading" class="card-title">Inference-Time Scaling Curve</h2>
             <div class="card-subtitle">Live batch evaluation across 30 independent trials computed in your browser</div>
           </div>
           <span id="difficulty-badge" class="badge-tag" style="margin-bottom:0;">Easy (N=8)</span>
         </div>
 
         <!-- SVG Chart Container -->
-        <div id="chart-container" style="min-height: 260px;"></div>
+        <div id="chart-container" style="min-height: 260px;" role="region" aria-label="Comparative Success Rate Chart"></div>
 
         <!-- Metric Readout Cards -->
-        <div class="metrics-grid">
+        <div class="metrics-grid" role="region" aria-label="Active Experiment Metrics">
           <div class="metric-card">
             <div class="metric-label">Success Rate</div>
             <div id="metric-success" class="metric-value">--</div>
@@ -87,27 +87,27 @@
       </section>
 
       <!-- Right Column: Real Board Animation -->
-      <section class="card board-card">
+      <section class="card board-card" aria-labelledby="board-heading">
         <div class="card-header" style="width: 100%;">
           <div>
-            <h2 class="card-title">Live Attempt Substrate</h2>
+            <h2 id="board-heading" class="card-title">Live Attempt Substrate</h2>
             <div class="card-subtitle">Authentic boardTrace playback of one actual solve attempt</div>
           </div>
         </div>
 
         <!-- SVG Chessboard Container -->
-        <div id="board-container"></div>
+        <div id="board-container" role="region" aria-label="Interactive Chessboard Display"></div>
 
         <!-- Board Playback Controls -->
         <div class="board-actions">
-          <button id="btn-watch-solve" class="btn-primary" type="button">Watch One Solve</button>
-          <button id="btn-play-pause" class="btn-control" type="button">Pause</button>
-          <button id="btn-prev-step" class="btn-control" type="button" title="Step backward">◀</button>
-          <button id="btn-next-step" class="btn-control" type="button" title="Step forward">▶</button>
+          <button id="btn-watch-solve" class="btn-primary" type="button" aria-label="Run fresh solve attempt and animate">Watch One Solve</button>
+          <button id="btn-play-pause" class="btn-control" type="button" aria-label="Pause or resume trace animation">Pause</button>
+          <button id="btn-prev-step" class="btn-control" type="button" aria-label="Step backward one frame" title="Step backward">◀</button>
+          <button id="btn-next-step" class="btn-control" type="button" aria-label="Step forward one frame" title="Step forward">▶</button>
         </div>
 
         <!-- Board Status Panel -->
-        <div id="board-status" class="board-status">
+        <div id="board-status" class="board-status" aria-live="polite">
           Initializing live trace...
         </div>
       </section>
@@ -115,7 +115,44 @@
     </main>
 
     <!-- Phase 5: Separately Bordered Published BDH-CQ Evidence Panel -->
-    <section id="evidence-container" class="evidence-panel-wrapper"></section>
+    <section id="evidence-container" class="evidence-panel-wrapper" aria-label="Published BDH-CQ Reference Evidence"></section>
+
+    <!-- Phase 6: Interactive Educational Recap Section -->
+    <section class="recap-section" aria-labelledby="recap-heading">
+      <div class="recap-header">
+        <div class="badge-tag" style="margin-bottom:6px;">Educational Review</div>
+        <h3 id="recap-heading" class="recap-title">Interactive Recap & Concept Check</h3>
+        <p class="recap-subtitle">Test your understanding of the core inference-time scaling principles demonstrated above.</p>
+      </div>
+      <div class="recap-grid">
+        <div class="recap-card">
+          <span class="recap-prompt-badge">Prompt 1</span>
+          <div class="recap-question">After increasing inference effort, what changed: success rate, compute cost, or both?</div>
+          <div class="recap-answer-box">
+            <strong>Concept:</strong> Increasing effort increases <strong>both</strong> success rate and total search compute cost. However, returns diminish: the gain from LOW to MEDIUM (+56.7% on Easy) is substantially larger than the gain from MEDIUM to HIGH (+10.0%), meaning each additional unit of compute buys progressively less accuracy.
+          </div>
+        </div>
+
+        <div class="recap-card">
+          <span class="recap-prompt-badge">Prompt 2</span>
+          <div class="recap-question">How is BDH-CQ's effort mechanism different from this live N-Queens demo?</div>
+          <div class="recap-answer-box">
+            <strong>Concept:</strong> This live demo scales <strong>discrete search computation</strong> (independent random restarts and iterative min-conflicts repair steps on a constraint puzzle). In contrast, BDH-CQ scales <strong>recurrent latent-state computation</strong> (recurrent associative working-memory updates inside a trained neural sequence model without verbalized reasoning tokens). They represent two distinct mechanisms that exhibit the same general accuracy-versus-compute scaling trade-off.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phase 6: Transparent Limitations & Experimental Setup Notice -->
+    <section class="limitations-box" aria-label="Experimental Scope and Limitations">
+      <div class="limitations-title">Experimental Scope & Methodological Disclosures</div>
+      <ul class="limitations-list">
+        <li><strong>Fixed Effort Presets:</strong> Compute budgets are calibrated fixed presets: LOW (1 restart × 20 steps), MEDIUM (3 restarts × 25 steps), HIGH (5 restarts × 40 steps).</li>
+        <li><strong>Sample Size & Noise:</strong> Live experiment metrics are computed over 30 independent trials per setting; minor statistical variance between seeds is genuine to the randomized local search.</li>
+        <li><strong>Algorithmic Analogy, Not Reproduction:</strong> N-Queens under min-conflicts is a classic constraint satisfaction problem, not a language model. It illustrates the general mathematical phenomenon of inference-time compute scaling, not BDH-CQ's proprietary model weights or training.</li>
+        <li><strong>Difficulty Ceiling:</strong> On Hard (24-Queens), increasing effort to HIGH elevates success to ~80% but does not reach 100%, demonstrating that test-time scaling raises achievable performance ceilings but cannot guarantee perfection on arbitrarily difficult instances.</li>
+      </ul>
+    </section>
 
   </div>
 

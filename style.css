@@ -213,6 +213,15 @@ body {
   margin-top: 2px;
 }
 
+/* Focus Visible for Keyboard Accessibility */
+button:focus-visible,
+.segmented-btn:focus-visible,
+a:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
 /* Board Area */
 .board-card {
   display: flex;
@@ -221,8 +230,10 @@ body {
 }
 
 #board-container {
-  width: 360px;
-  height: 360px;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1;
+  height: auto;
   margin-bottom: 14px;
 }
 
@@ -627,4 +638,190 @@ body {
 .citations-footer a:hover {
   color: #7dd3fc;
 }
+
+/* =========================================================
+   Phase 6: Recap / Self-Test Section
+   ========================================================= */
+.recap-section {
+  margin-top: 32px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.recap-header {
+  margin-bottom: 20px;
+}
+
+.recap-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0 0 6px 0;
+  color: var(--text-primary);
+}
+
+.recap-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.recap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 800px) {
+  .recap-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.recap-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.recap-prompt-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.recap-question {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 14px 0;
+  line-height: 1.4;
+}
+
+.recap-answer-box {
+  background: rgba(15, 23, 42, 0.75);
+  border-left: 3px solid var(--accent-cyan);
+  padding: 12px 14px;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.83rem;
+  color: #cbd5e1;
+  line-height: 1.55;
+  margin-top: auto;
+}
+
+.recap-answer-box strong {
+  color: var(--accent-cyan);
+}
+
+/* =========================================================
+   Phase 6: Transparent Limitations & Experimental Setup Box
+   ========================================================= */
+.limitations-box {
+  margin-top: 32px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+
+.limitations-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin: 0 0 10px 0;
+}
+
+.limitations-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.limitations-list li {
+  margin-bottom: 6px;
+}
+
+.limitations-list strong {
+  color: #94a3b8;
+}
+
+/* =========================================================
+   Phase 6: Mobile Width Usability Pass (< 640px)
+   ========================================================= */
+@media (max-width: 640px) {
+  .app-container {
+    padding: 16px 12px 36px;
+  }
+  .title {
+    font-size: 1.4rem;
+  }
+  .control-deck {
+    padding: 14px 14px;
+    gap: 16px;
+  }
+  .control-group {
+    width: 100%;
+  }
+  .segmented-control {
+    width: 100%;
+    display: flex;
+  }
+  .segmented-btn {
+    flex: 1;
+    padding: 8px 6px;
+    font-size: 0.78rem;
+    text-align: center;
+  }
+  .card {
+    padding: 16px 12px;
+  }
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .metric-card {
+    padding: 10px;
+  }
+  .metric-value {
+    font-size: 1.15rem;
+  }
+  .evidence-panel-wrapper {
+    padding: 16px 12px;
+  }
+  .curve-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .curve-row-label {
+    width: 100%;
+  }
+  .curve-row-val {
+    width: 100%;
+    text-align: left;
+  }
+  .recap-section {
+    padding: 18px 14px;
+  }
+  .limitations-box {
+    padding: 16px 14px;
+  }
+}
+
 

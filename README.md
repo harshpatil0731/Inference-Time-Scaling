@@ -122,15 +122,19 @@ Pure static frontend: HTML + CSS + vanilla JavaScript (or a minimal single-page 
 
 **The live algorithm (min-conflicts local search on N-Queens).** Place N queens on an N×N board, one per column, at random rows. Define `conflicts(board)` as the number of pairs of queens attacking each other (same row or diagonal). At each step, pick the queen with the most conflicts, and move it to the row in its column that minimizes conflicts (ties broken randomly). Repeat up to `maxSteps` times; declare success if `conflicts(board) == 0`. Wrap this in `runAttempt`, and run it `restarts` times per effort level, each restart starting from a fresh random board — a real, textbook instance of local search with random restarts (Minton et al., 1992).
 
-**Effort → compute budget mapping (fixed presets):**
+**Effort → compute budget mapping (calibrated presets):**
 
-| Effort | Restarts | Max steps per restart | Roughly mirrors |
-|---|---|---|---|
-| LOW | 1 | 20 | a single quick attempt |
-| MEDIUM | 5 | 50 | a moderate compute budget |
-| HIGH | 20 | 100 | a large compute budget |
+| Effort | Restarts | Max steps per restart | Total Max Budget | Roughly mirrors |
+|---|---|---|---|---|
+| LOW | 1 | 20 | 20 steps | a single quick attempt |
+| MEDIUM | 3 | 25 | 75 steps | a moderate compute budget |
+| HIGH | 5 | 40 | 200 steps | a large compute budget |
 
-These are the two classic, real mechanisms of test-time scaling that appear in the literature — **parallel sampling** (more independent restarts, the algorithmic analogue of best-of-n / self-consistency sampling in LLMs) and **sequential refinement** (more steps per attempt, the algorithmic analogue of iterative latent refinement). The artifact's Effort dial scales both together, and the README/UI names this explicitly so the learner sees both mechanisms named, not just one hidden inside a single number.
+**Task Difficulty presets (calibrated problem sizes):**
+- **Easy ($N=8$ Queens)**: Standard 8-Queens problem. Solves readily, visibly demonstrating diminishing returns (LOW 33.3% ➔ MEDIUM 90.0% ➔ HIGH 100.0%).
+- **Hard ($N=24$ Queens)**: 24-Queens problem with vast search space. Visibly resists LOW/MEDIUM effort and caps at ~80% on HIGH effort, empirically showing that inference-time compute increases the achievable ceiling but cannot guarantee 100% success on arbitrarily hard instances.
+
+These are the two classic, real mechanisms of test-time scaling that appear in the literature — **parallel sampling** (more independent restarts, the algorithmic analogue of best-of-n / self-consistency sampling in LLMs) and **sequential refinement** (more steps per attempt, the algorithmic analogue of iterative latent refinement). The artifact's Effort dial scales both together, and the README/UI names this explicitly so the learner sees both mechanisms named, not just one hidden inside a single number. Compute cost is measured as total search steps actually executed across allocated restarts.
 
 **What BDH-CQ actually does (primary-source description, not reproduced or re-implemented here).** BDH-CQ is built on the Dragon Hatchling (BDH) architecture — a post-Transformer sequence model using high-dimensional non-negative activations and a recurrent associative state acting as synaptic-style working memory (Kosowski et al., 2025). BDH-CQ adds in-context skill acquisition from demonstrations, trained across different latent-reasoning "effort" levels; at inference, the chosen effort level sets how many recurrent latent-computation steps the model performs before answering, with no additional parameter updates and no verbalized chain of thought (Engdahl et al., 2026). This is a **sequential refinement** mechanism in latent space — mechanically closer to our "steps per restart" dimension than our "restarts" dimension, and the artifact says so explicitly rather than implying full equivalence.
 
@@ -228,22 +232,29 @@ The hosted public artifact URL (no sign-in) is provided separately in the submis
 ---
 
 ## 19. Project Structure
-
+ 
 ```
 effort-dial/
 ├── README.md                # this file
-├── concept_summary.pdf       # one-page concept summary (separate deliverable)
-├── index.html                 # single entry point
-├── style.css
+├── index.html               # single entry point
+├── style.css                # dark-themed responsive stylesheet
 ├── src/
-│   ├── solver.js              # min-conflicts algorithm, runAttempt / runBatch
-│   ├── board.js                # board rendering + "watch one solve" animation
-│   ├── chart.js                # success-rate / cost / latency chart rendering
-│   ├── evidence.js             # static, labeled BDH-CQ reference data
-│   └── app.js                  # wires controls to solver + chart + evidence panel
+│   ├── config.js            # calibrated effort presets & task difficulty definitions
+│   ├── solver.js            # min-conflicts algorithm, runAttempt / runBatch
+│   ├── board.js             # SVG board rendering + "watch one solve" animation
+│   ├── chart.js             # success-rate / cost / latency chart rendering
+│   ├── evidence.js          # static, labeled BDH-CQ reference data & comparison panel
+│   └── app.js               # wires controls to solver + chart + board + evidence panel
 ├── sources/
-│   └── SOURCES.md              # citation + license record
-└── LICENSE
+│   └── SOURCES.md           # citation + license record + AI assistance disclosure
+├── tests/
+│   ├── solver.test.js       # Phase 1: algorithm, PRNG, conflicts tests
+│   ├── phase2.test.js       # Phase 2: calibrated benchmark verification
+│   ├── board.test.js        # Phase 3: real boardTrace playback tests
+│   ├── phase4.test.js       # Phase 4: full UI integration tests
+│   ├── phase5.test.js       # Phase 5: BDH-CQ evidence verification
+│   └── phase6.test.js       # Phase 6: recap, accessibility & regression tests
+└── LICENSE                  # MIT License
 ```
 
 ---
