@@ -13,25 +13,25 @@ This document records the academic provenance, licensing terms, and disclosures 
    * *Citation:* arXiv:2408.03314 [cs.LG].
    * *Contribution to Project:* Theoretical framing that allocating compute during inference yields accuracy gains competitive with pre-training scale; establishes the compute-vs-accuracy trade-off principle.
 
-2. **Muennighoff, N., Rush, A. M., et al. (2025)**
-   * *Title:* s1: Simple Test-Time Scaling.
-   * *Citation:* arXiv:2501.19393 [cs.CL].
+2. **Muennighoff, N., Yang, Z., Shi, W., Li, X. L., Fei-Fei, L., Hajishirzi, H., Zettlemoyer, L., Liang, P., Candès, E., & Hashimoto, T. (2025)**
+   * *Title:* s1: Simple test-time scaling.
+   * *Citation:* arXiv:2501.19393v3 [cs.CL].
    * *Contribution to Project:* Demonstrates a controllable test-time compute knob in token generation, contrasting with latent recurrent test-time scaling.
 
-3. **Zhang, Q., et al. (2025)**
-   * *Title:* A Survey on Test-Time Scaling in Large Language Models: What, How, Where, and How Well?
-   * *Citation:* arXiv:2503.24235 [cs.AI].
+3. **Zhang, Q., Lyu, F., Sun, Z., Wang, L., Zhang, W., Hua, W., Wu, H., Guo, Z., Wang, Y., Muennighoff, N., King, I., Liu, X., & Ma, C. (2025)**
+   * *Title:* A Survey on Test-Time Scaling in Large Language Models: What, How, Where, and How Well.
+   * *Citation:* arXiv:2503.24235v3 [cs.CL].
    * *Contribution to Project:* Taxonomy distinguishing parallel sampling (restarts / best-of-$N$) from sequential refinement (iterative search steps), both of which are scaled by this artifact's Effort Dial.
 
 ### Primary BDH & BDH-CQ Literature
 
-4. **Engdahl, et al. (2026)**
+4. **Engdahl, B., Kosowski, A., Chorowski, J., Stamirowska, Z., Uznański, P., Jiang, J., Phadke, R., Kinas, R., & Zhong, R. (2026)**
    * *Title:* BDH-CQ: In-Context Learning with Recurrent Latent Reasoning.
-   * *Citation:* arXiv:2608.09888 [cs.AI].
+   * *Citation:* arXiv:2608.09888v1 [cs.NE].
    * *Numerical Source Used:* Table 1 (pass@2 accuracy on ARC benchmark across inference effort levels: LOW 21.0%, MEDIUM 27.0%, HIGH 29.5%).
    * *Usage Boundary:* Used strictly as published, precomputed reference data in the Evidence Panel. Not reproduced, re-implemented, or trained here.
 
-5. **Kosowski, A., et al. (2025)**
+5. **Kosowski, A., Uznański, P., Chorowski, J., Stamirowska, Z., & Bartoszkiewicz, M. (2025)**
    * *Title:* The Dragon Hatchling: The Missing Link between the Transformer and Models of the Brain.
    * *Citation:* arXiv:2509.26507 [cs.NE].
    * *Contribution to Project:* Architectural description of the recurrent associative state acting as synaptic working memory.

@@ -307,12 +307,36 @@ effort-dial/
 ```
 
 ### Primary Academic Sources
-1. **Snell, C., et al. (2024)**. *Scaling LLM Test-Time Compute Optimally Can Be More Effective Than Scaling Model Parameters.* [arXiv:2408.03314](https://arxiv.org/abs/2408.03314).
-2. **Muennighoff, N., et al. (2025)**. *s1: Simple Test-Time Scaling.* [arXiv:2501.19393](https://arxiv.org/abs/2501.19393).
-3. **Zhang, Q., et al. (2025)**. *A Survey on Test-Time Scaling in Large Language Models: What, How, Where, and How Well?* [arXiv:2503.24235](https://arxiv.org/abs/2503.24235).
-4. **Engdahl, E., et al. (2026)**. *BDH-CQ: In-Context Learning with Recurrent Latent Reasoning.* [arXiv:2608.09888](https://arxiv.org/abs/2608.09888).
-5. **Kosowski, A., et al. (2025)**. *The Dragon Hatchling: The Missing Link between the Transformer and Models of the Brain.* [arXiv:2509.26507](https://arxiv.org/abs/2509.26507).
-6. **Minton, S., et al. (1992)**. *Minimizing Conflicts: A Heuristic Repair Method for Constraint Satisfaction and Scheduling Problems.* *Artificial Intelligence*, 58(1-3), 161–205.
+
+1. **Snell, C., Lee, J., Xu, K., & Kumar, A. (2024)**.  
+   *Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters.*  
+   Preprint at [arXiv:2408.03314v1 [cs.LG]](https://arxiv.org/abs/2408.03314). UC Berkeley and Google DeepMind.  
+   *(Foundational study establishing compute-optimal test-time allocation and diminishing returns frontiers).*
+
+2. **Muennighoff, N., Yang, Z., Shi, W., Li, X. L., Fei-Fei, L., Hajishirzi, H., Zettlemoyer, L., Liang, P., Candès, E., & Hashimoto, T. (2025)**.  
+   *s1: Simple test-time scaling.*  
+   Preprint at [arXiv:2501.19393v3 [cs.CL]](https://arxiv.org/abs/2501.19393). Stanford University, University of Washington, Allen Institute for AI, and Contextual AI.  
+   *(Demonstrates test-time scaling via budget-forcing and reasoning tokens in generative language models).*
+
+3. **Zhang, Q., Lyu, F., Sun, Z., Wang, L., Zhang, W., Hua, W., Wu, H., Guo, Z., Wang, Y., Muennighoff, N., King, I., Liu, X., & Ma, C. (2025)**.  
+   *A Survey on Test-Time Scaling in Large Language Models: What, How, Where, and How Well.*  
+   Preprint at [arXiv:2503.24235v3 [cs.CL]](https://arxiv.org/abs/2503.24235). City University of Hong Kong, McGill University / MILA, Renmin University of China, CUHK, Salesforce AI, Macquarie University, Stanford University, and UCSB.  
+   *(Comprehensive survey formalizing the taxonomy of parallel sampling vs. sequential search refinement).*
+
+4. **Engdahl, B., Kosowski, A., Chorowski, J., Stamirowska, Z., Uznański, P., Jiang, J., Phadke, R., Kinas, R., & Zhong, R. (2026)**.  
+   *BDH-CQ: In-Context Learning with Recurrent Latent Reasoning.*  
+   Preprint at [arXiv:2608.09888v1 [cs.NE]](https://arxiv.org/abs/2608.09888). Pathway, Bielik AI, and New York University.  
+   *(Primary technical reference for recurrent latent reasoning; source of the published ARC pass@2 benchmark figures cited in the Evidence Panel).*
+
+5. **Kosowski, A., Uznański, P., Chorowski, J., Stamirowska, Z., & Bartoszkiewicz, M. (2025)**.  
+   *The Dragon Hatchling: The Missing Link between the Transformer and Models of the Brain.*  
+   Preprint at [arXiv:2509.26507 [cs.NE]](https://arxiv.org/abs/2509.26507). Pathway, Bielik AI, and University of Wrocław.  
+   *(Foundational recurrent associative memory architecture underlying the BDH family of models).*
+
+6. **Minton, S., Johnston, M. D., Philips, A. B., & Laird, P. (1992)**.  
+   *Minimizing Conflicts: A Heuristic Repair Method for Constraint Satisfaction and Scheduling Problems.*  
+   *Artificial Intelligence*, 58(1–3), pp. 161–205. DOI: [10.1016/0004-3702(92)90007-K](https://doi.org/10.1016/0004-3702(92)90007-K). NASA Ames Research Center.  
+   *(Foundational min-conflicts heuristic repair algorithm implemented as our live interactive substrate).*
 
 ### License & AI Assistance
 - **License**: Released under the open-source [MIT License](LICENSE).
