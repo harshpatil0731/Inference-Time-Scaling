@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Effort Dial - Phase 3 Live Board Animation</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      color: #94a3b8;
+      margin-top: 0;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+    }
+    #board-wrapper {
+      background: #1e293b;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #board-container {
+      width: 380px;
+      height: 380px;
+      margin-bottom: 16px;
+    }
+    .controls {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    button.secondary {
+      background: #475569;
+    }
+    button.secondary:hover {
+      background: #334155;
+    }
+    .status-panel {
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      background: #0f172a;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      width: 350px;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .badge-solved {
+      color: #4ade80;
+      font-weight: bold;
+    }
+    .badge-unsolved {
+      color: #f87171;
+      font-weight: bold;
+    }
+    .badge-running {
+      color: #fbbf24;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Live N-Queens Board Animation (Phase 3)</h1>
+  <p class="subtitle">Driven by real solver.js boardTrace — zero simulated or interpolated movements</p>
+
+  <div id="board-wrapper">
+    <div id="board-container"></div>
+
+    <div class="controls">
+      <button id="btn-watch-easy">Watch One Solve (N=8)</button>
+      <button id="btn-watch-hard" class="secondary">Watch Hard Attempt (N=24)</button>
+      <button id="btn-play-pause" class="secondary">Pause</button>
+      <button id="btn-prev" class="secondary">◀ Step</button>
+      <button id="btn-next" class="secondary">Step ▶</button>
+    </div>
+
+    <div id="status-panel" class="status-panel">
+      Initializing...
+    </div>
+  </div>
+
+  <script src="src/solver.js"></script>
+  <script src="src/board.js"></script>
+  <script>
+    const { runAttempt, conflicts } = window.Solver;
+    const { createBoardRenderer, BoardAnimator } = window.BoardModule;
+
+    const boardContainer = document.getElementById('board-container');
+    const statusPanel = document.getElementById('status-panel');
+    const btnWatchEasy = document.getElementById('btn-watch-easy');
+    const btnWatchHard = document.getElementById('btn-watch-hard');
+    const btnPlayPause = document.getElementById('btn-play-pause');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+
+    const renderer = createBoardRenderer(boardContainer, 380);
+    const animator = new BoardAnimator(renderer);
+
+    let currentAttempt = null;
+
+    function updateStatus(stepIndex, board, move) {
+      if (!board) return;
+      const currentConflicts = conflicts(board);
+      const totalSteps = animator.boardTrace.length - 1;
+      const isComplete = stepIndex >= totalSteps;
+      const isSolved = currentConflicts === 0;
+
+      let badge = '<span class="badge-running">In Progress</span>';
+      if (isComplete) {
+        badge = isSolved ? '<span class="badge-solved">Solved (0 Conflicts)</span>'
+                         : '<span class="badge-unsolved">Unsolved (Limit Reached)</span>';
+      }
+
+      let moveDesc = 'Step 0 (Random Start)';
+      if (move) {
+        moveDesc = `Col ${move.col}: Row ${move.fromRow} ➔ ${move.toRow}`;
+      }
+
+      statusPanel.innerHTML = `
+        <div><strong>Step ${stepIndex} / ${totalSteps}</strong> | Conflicts: <strong>${currentConflicts}</strong> | ${badge}</div>
+        <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 4px;">${moveDesc}</div>
+      `;
+    }
+
+    function runAndAnimate(n, maxSteps) {
+      animator.stop();
+      btnPlayPause.textContent = 'Pause';
+
+      // Genuine solver run producing real boardTrace
+      currentAttempt = runAttempt(n, maxSteps, null, true);
+
+      animator.loadTrace(currentAttempt.boardTrace, {
+        stepDelayMs: n === 8 ? 140 : 80,
+        onStep: (step, board, move) => {
+          updateStatus(step, board, move);
+        },
+        onComplete: (finalBoard) => {
+          btnPlayPause.textContent = 'Replay';
+        }
+      });
+
+      animator.play();
+    }
+
+    btnWatchEasy.addEventListener('click', () => runAndAnimate(8, 50));
+    btnWatchHard.addEventListener('click', () => runAndAnimate(24, 40));
+
+    btnPlayPause.addEventListener('click', () => {
+      if (animator.isPlaying) {
+        animator.pause();
+        btnPlayPause.textContent = 'Play';
+      } else {
+        if (animator.currentIndex >= animator.boardTrace.length - 1) {
+          animator.jumpToStep(0);
+        }
+        animator.play();
+        btnPlayPause.textContent = 'Pause';
+      }
+    });
+
+    btnPrev.addEventListener('click', () => {
+      animator.stepBackward();
+      btnPlayPause.textContent = 'Play';
+    });
+
+    btnNext.addEventListener('click', () => {
+      animator.stepForward();
+      btnPlayPause.textContent = animator.isPlaying ? 'Pause' : 'Play';
+    });
+
+    // Auto-start with Easy N=8 on initial load (cold open)
+    runAndAnimate(8, 50);
+  </script>
+</body>
+</html>
