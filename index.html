@@ -117,6 +117,32 @@
     <!-- Phase 5: Separately Bordered Published BDH-CQ Evidence Panel -->
     <section id="evidence-container" class="evidence-panel-wrapper" aria-label="Published BDH-CQ Reference Evidence"></section>
 
+    <!-- Phase 7 Post-Plan Extension: Advanced Scaling Experiment -->
+    <section id="scaling-container" class="scaling-panel-wrapper" aria-label="Advanced Scaling Experiment">
+      <div class="scaling-exp-inner">
+        <!-- Section Header -->
+        <div class="scaling-header">
+          <div>
+            <div class="badge-tag" style="margin-bottom: 6px;">Phase 7 Post-Implementation Extension</div>
+            <h3 class="scaling-title">Advanced Scaling Experiment</h3>
+            <p class="scaling-desc">
+              Execute a continuous 5-point inference compute sweep on the real solver. Measures the empirical
+              Cost-vs-Accuracy Pareto frontier and calculates marginal returns for <strong id="scaling-diff-label">Easy (8-Queens)</strong>.
+            </p>
+          </div>
+          <div class="scaling-actions">
+            <button id="btn-run-sweep" class="btn-sweep" type="button" aria-label="Run Scaling Sweep on active difficulty">
+              ▶ Run Scaling Sweep
+            </button>
+            <div id="sweep-status-indicator" class="sweep-status-text"></div>
+          </div>
+        </div>
+
+        <!-- Dynamic Results Container -->
+        <div id="scaling-results-container"></div>
+      </div>
+    </section>
+
     <!-- Phase 6: Interactive Educational Recap Section -->
     <section class="recap-section" aria-labelledby="recap-heading">
       <div class="recap-header">
@@ -162,6 +188,7 @@
   <script src="src/chart.js"></script>
   <script src="src/board.js"></script>
   <script src="src/evidence.js"></script>
+  <script src="src/scaling.js"></script>
   <script src="src/app.js"></script>
 </body>
 </html>

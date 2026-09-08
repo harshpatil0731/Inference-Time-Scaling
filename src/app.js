@@ -20,11 +20,18 @@
   const { createBoardRenderer, BoardAnimator } = window.BoardModule;
   const { createChartRenderer } = window.ChartModule;
   const { renderEvidencePanel } = window.EvidenceModule || {};
+  const {
+    runScalingSweep,
+    computeMarginalAnalysis,
+    evaluateScalingInsights,
+    renderScalingExperimentView
+  } = window.ScalingModule || {};
 
   // DOM Elements
   const chartContainer = document.getElementById('chart-container');
   const boardContainer = document.getElementById('board-container');
   const evidenceContainer = document.getElementById('evidence-container');
+  const scalingContainer = document.getElementById('scaling-container');
 
   const effortButtons = {
     LOW: document.getElementById('effort-low'),
@@ -48,6 +55,8 @@
   const btnNextStep = document.getElementById('btn-next-step');
   const boardStatus = document.getElementById('board-status');
   const difficultyBadge = document.getElementById('difficulty-badge');
+  const btnRunSweep = document.getElementById('btn-run-sweep');
+  const sweepStatusIndicator = document.getElementById('sweep-status-indicator');
 
   // Application State
   let currentEffort = 'MEDIUM';
@@ -225,9 +234,85 @@
     updateControlButtonsUI();
     runLiveExperiment();
     launchBoardAnimation();
+    executeScalingSweep();
+  }
+
+  /**
+   * Executes the Phase 7 Advanced Scaling Sweep across 5 compute levels
+   * and renders the Pareto curve, marginal analysis table, and automated insights.
+   * @returns {Array<object>|null} sweep results
+   */
+  function executeScalingSweep() {
+    if (!scalingContainer || !runScalingSweep) return null;
+
+    const diffCfg = CONFIG.DIFFICULTY_PRESETS[currentDifficulty];
+    const n = diffCfg.n;
+
+    // Run real 5-level scaling sweep using existing solver
+    const sweepResults = runScalingSweep(n, CONFIG.TRIALS, CONFIG.DEFAULT_SEED, window.Solver);
+    const marginals = computeMarginalAnalysis(sweepResults);
+    const insights = evaluateScalingInsights(sweepResults, marginals);
+
+    renderScalingExperimentView(scalingContainer, {
+      difficulty: currentDifficulty,
+      sweepResults,
+      marginals,
+      insights
+    });
+
+    return sweepResults;
+  }
+
+  /**
+   * Triggers an interactive scaling sweep with visible loading state,
+   * live timer, and completion feedback.
+   */
+  function triggerInteractiveScalingSweep() {
+    if (!btnRunSweep || btnRunSweep.disabled) return;
+
+    btnRunSweep.innerHTML = '⏳ Running Sweep...';
+    btnRunSweep.disabled = true;
+
+    if (sweepStatusIndicator) {
+      sweepStatusIndicator.textContent = 'Executing 5 budget levels on real solver...';
+      sweepStatusIndicator.style.color = '#38bdf8';
+    }
+
+    // Allow browser to render loading state
+    setTimeout(() => {
+      const startTime = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+      const results = executeScalingSweep();
+      const endTime = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+      const elapsed = Math.round((endTime - startTime) * 10) / 10;
+
+      if (results) {
+        btnRunSweep.innerHTML = '✓ Sweep Completed';
+        btnRunSweep.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+
+        if (sweepStatusIndicator) {
+          const now = new Date();
+          const timeStr = now.toLocaleTimeString();
+          sweepStatusIndicator.textContent = `✓ Live sweep verified at ${timeStr} (${elapsed}ms wall-clock)`;
+          sweepStatusIndicator.style.color = '#34d399';
+        }
+
+        setTimeout(() => {
+          btnRunSweep.innerHTML = '▶ Run Scaling Sweep';
+          btnRunSweep.style.background = '';
+          btnRunSweep.disabled = false;
+        }, 1200);
+      } else {
+        btnRunSweep.innerHTML = '▶ Run Scaling Sweep';
+        btnRunSweep.disabled = false;
+      }
+    }, 60);
   }
 
   // Bind Event Listeners
+  if (btnRunSweep) {
+    btnRunSweep.addEventListener('click', triggerInteractiveScalingSweep);
+  }
+
   Object.keys(effortButtons).forEach(key => {
     if (effortButtons[key]) {
       effortButtons[key].addEventListener('click', () => setEffort(key));
@@ -280,5 +365,6 @@
   updateControlButtonsUI();
   runLiveExperiment();
   launchBoardAnimation();
+  executeScalingSweep();
 
 })();
